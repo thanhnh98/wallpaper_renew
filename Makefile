@@ -5,3 +5,9 @@ code_generate:
 
 json_generate:
 	flutter pub run build_runner build --delete-conflicting-outputs
+
+build:
+	flutter run
+
+clea:
+	flutter clean && flutter pub get
