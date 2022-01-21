@@ -1,24 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-abstract class BaseBloc<E, S extends BaseEventState> extends Bloc<E, S> {
+abstract class BaseBloc<E extends BaseEvent, S extends BaseState> extends Bloc<E, S> {
   BaseBloc(S initialState) : super(initialState);
 
   void dispose() {}
 }
 
-class BaseEventState{
-  BaseEventState();
-  factory BaseEventState.initial() => BaseEventState();
+class BaseEvent{
+  BaseEvent();
+  factory BaseEvent.initial() => BaseEvent();
 }
 
-class BaseViewState{
+class BaseState{
 
 }
 
 
 // ViewState: Data
-class DataViewState<T> extends BaseViewState {
+class DataViewState<T> extends BaseState {
   T? data;
   DataViewState(this.data);
 }

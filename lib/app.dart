@@ -12,7 +12,7 @@ class App extends BaseApp {
   State<StatefulWidget> createState() => _AppState();
 }
 
-class _AppState extends BaseState<App, MainAppBloc> with WidgetsBindingObserver{
+class _AppState extends BaseStateWidget<App, MainAppBloc> with WidgetsBindingObserver{
 
   _AppState(): super();
 

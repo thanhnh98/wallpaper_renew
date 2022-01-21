@@ -21,7 +21,7 @@ class HomePage extends BaseStatefulWidget {
   State<StatefulWidget> createState() => _HomeState();
 }
 
-class _HomeState extends BaseState<HomePage, HomeBloc> {
+class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
   _HomeState() : super();
 
   @override
@@ -36,89 +36,66 @@ class _HomeState extends BaseState<HomePage, HomeBloc> {
         bloc: bloc,
         builder: (context, state) {
           return Scaffold(
-              body: SafeArea(
-                  child: Stack(
-                    children: [
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                      CommonColor.primaryColorDark,
-                      CommonColor.primaryColor
-                    ])),
-              ),
-              Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Hero(tag: "search", child: _buildSearchComponent()),
-                        SizedBox(
-                          height: SizeConfig.verticalSize(2),
-                        ),
-                        _buildSloganComponent(),
-                        SizedBox(
-                          height: SizeConfig.verticalSize(1),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              left: SizeConfig.horizontalSize(5)),
-                          child: RichText(
-                            text: TextSpan(
-                                text: "1000+ S.current.photo",
-                                style: CommonStyle.textStyleCustom(
-                                  size: CommonStyle.super_extra_text_size,
-                                  color: CommonColor.white,
-                                  fontStyle: FontStyle.normal,
+              body: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              CommonColor.primaryColorDark,
+                              CommonColor.primaryColor
+                            ])),
+                  ),
+                  Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Hero(tag: "search", child: _buildSearchComponent()),
+                            SizedBox(
+                              height: SizeConfig.verticalSize(2),
+                            ),
+                            _buildSloganComponent(),
+                            SizedBox(
+                              height: SizeConfig.verticalSize(1),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: SizeConfig.horizontalSize(5)),
+                              child: RichText(
+                                text: TextSpan(
+                                    text: "1000+ S.current.photo",
+                                    style: CommonStyle.textStyleCustom(
+                                      size: CommonStyle.super_extra_text_size,
+                                      color: CommonColor.white,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                            ),
+                            SizedBox(
+                              height: SizeConfig.verticalSize(4),
+                            ),
+                            Container(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: _buildListImageItem(),
+                                  ),
                                 )),
-                          ),
+                          ],
                         ),
-                        SizedBox(
-                          height: SizeConfig.verticalSize(4),
-                        ),
-                        Container(
-                            child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: _buildListImageItem(),
-                          ),
-                        )),
-                      ],
-                    ),
-                  )),
-              Positioned.fill(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                        height: SizeConfig.blockSizeVertical * 30,
-                        width: double.infinity,
-                        margin: EdgeInsets.only(
-                          top: SizeConfig.verticalSize(5),
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topRight: BorderRadius.circular(15).topRight,
-                            topLeft: BorderRadius.circular(15).topLeft,
-                          ),
-                          color: CommonColor.primaryColorLight,
-                        ),
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                                left: SizeConfig.horizontalSize(5),
-                                top: SizeConfig.horizontalSize(5),
-                                right: SizeConfig.horizontalSize(5)),
-                            child: DraggableBottomSheet())),
-                  ))
-            ],
-          )));
+                      )),
+                  _buildBottomSheet()
+                ],
+              ));
         });
   }
 
@@ -143,8 +120,13 @@ class _HomeState extends BaseState<HomePage, HomeBloc> {
         NavigatorGlobal.pushSearchPage(context);
       },
       child: Container(
-        height: 40,
-        margin: EdgeInsets.all(15),
+        height: 50,
+        margin: const EdgeInsets.only(
+          left: 15,
+          right: 15,
+          top: 30,
+          bottom: 15
+        ),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.grey.withOpacity(0.7)),
@@ -242,5 +224,9 @@ class _HomeState extends BaseState<HomePage, HomeBloc> {
             ],
           )),
     );
+  }
+
+  Widget _buildBottomSheet() {
+    return DraggableBottomSheet();
   }
 }

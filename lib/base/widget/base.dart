@@ -5,13 +5,13 @@ abstract class BaseStatefulWidget extends StatefulWidget {
   const BaseStatefulWidget({key}) : super(key: key);
 }
 
-abstract class ViewBloc<E, S extends BaseEventState> extends BaseBloc<E, S> {
+abstract class ViewBloc<E extends BaseEvent, S extends BaseState> extends BaseBloc<E, S> {
   ViewBloc(S initialState) : super(initialState);
 
   void load() {}
 }
 
-abstract class BaseState<T extends BaseStatefulWidget, B extends BaseBloc> extends State<T> {
+abstract class BaseStateWidget<T extends BaseStatefulWidget, B extends BaseBloc> extends State<T> {
   B? _bloc;
 
   B? get bloc => _bloc;

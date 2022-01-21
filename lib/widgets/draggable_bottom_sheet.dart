@@ -11,6 +11,7 @@ import 'package:wallpaper/common/constant.dart';
 import 'package:wallpaper/common/navigator_custom.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
+import 'package:wallpaper/events/dragable_sheet_event_state.dart';
 import 'package:wallpaper/model/horizontal_landing_item.dart';
 import 'package:wallpaper/model/photo.dart';
 
@@ -20,7 +21,7 @@ class DraggableBottomSheet extends BaseStatefulWidget{
 
 }
 
-class _DraggableBottomSheet extends BaseState<DraggableBottomSheet, DraggableBottomSheetBloc> {
+class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, DraggableBottomSheetBloc> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -29,46 +30,70 @@ class _DraggableBottomSheet extends BaseState<DraggableBottomSheet, DraggableBot
         minChildSize: 0.3,
         maxChildSize: 0.9,
         builder: (context, scrollController){
-          return BlocBuilder(
-            bloc: bloc,
-            builder: (context, state){
-              return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
-                  controller: scrollController,
-                  itemCount: 1,
-                  itemBuilder: (context, index){
-                    return _buildListFavouriteEmpty();
-                  });
-            },
+          return Container(
+                    height: SizeConfig.blockSizeVertical * 30,
+                    width: double.infinity,
+                    margin: EdgeInsets.only(
+                      top: SizeConfig.verticalSize(5),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: BorderRadius.circular(15).topRight,
+                        topLeft: BorderRadius.circular(15).topLeft,
+                      ),
+                      color: CommonColor.primaryColorLight,
+                    ),
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            left: SizeConfig.horizontalSize(5),
+                            top: SizeConfig.horizontalSize(5),
+                            right: SizeConfig.horizontalSize(5)),
+                        child:  BlocBuilder(
+                          bloc: bloc,
+                          buildWhen: (oldState, newState){
+                            return newState is DraggableBottomSheetStateLoaded ||
+                                    newState is DraggableBottomSheetStateInitial;
+                          },
+                          builder: (context, state){
+                            print("state ${state}\n");
+                            return GridView.builder(
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+                                controller: scrollController,
+                                itemCount: 1,
+                                itemBuilder: (context, index){
+                                  return _buildListFavouriteEmpty();
+                                });
+                          },
+                        )
+                    )
           );
-          //   return StaggeredGrid.count(
-          //     crossAxisCount: 2,
-          //     controller: scrollController,
-          //     itemCount: listImg.length + 1,
-          //     itemBuilder: (context, index){
-          //       if (index == 0) {
-          //         return SizedBox(
-          //           height: 32,
-          //           child: Padding(
-          //             padding: EdgeInsets.all(10),
-          //             child: RichText(
-          //               text: TextSpan(
-          //                 text: "S.current.favourite_list",
-          //                 style: CommonStyle.textStyleCustom(
-          //                   size: 24.0,
-          //                   weight: FontWeight.bold,
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         );
-          //       } else {
-          //         return _buildHorizontalItem(listImg[index - 1]);
-          //       }
-          //     },
-          //   );
-          // });
-        });
+            // return StaggeredGrid.count(
+            //   crossAxisCount: 2,
+            //   controller: scrollController,
+            //   itemCount: listImg.length + 1,
+            //   itemBuilder: (context, index){
+            //     if (index == 0) {
+            //       return SizedBox(
+            //         height: 32,
+            //         child: Padding(
+            //           padding: EdgeInsets.all(10),
+            //           child: RichText(
+            //             text: TextSpan(
+            //               text: "S.current.favourite_list",
+            //               style: CommonStyle.textStyleCustom(
+            //                 size: 24.0,
+            //                 weight: FontWeight.bold,
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       );
+            //     } else {
+            //       return _buildHorizontalItem(listImg[index - 1]);
+            //     }
+            //   },
+            // );
+          });
   }
 
   @override
@@ -82,7 +107,7 @@ class _DraggableBottomSheet extends BaseState<DraggableBottomSheet, DraggableBot
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Center(
               child: RichText(
                 text: TextSpan(
@@ -94,15 +119,21 @@ class _DraggableBottomSheet extends BaseState<DraggableBottomSheet, DraggableBot
                 ),
               ),
             )),
-        Center(
-          child: Image.asset(
-            "assets/empty_image.png",
-            width: SizeConfig.horizontalSize(15),
-            height: SizeConfig.horizontalSize(15),
+        GestureDetector(
+          onTap: (){
+            print("on tapped ${bloc}");
+            bloc?.loadImage();
+          },
+          child: Center(
+            child: Image.asset(
+              "assets/empty_image.png",
+              width: SizeConfig.horizontalSize(15),
+              height: SizeConfig.horizontalSize(15),
+            ),
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(

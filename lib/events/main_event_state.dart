@@ -1,6 +1,6 @@
 import 'package:wallpaper/base/bloc/base.dart';
 
-class MainAppState extends BaseViewState {}
+class MainAppState extends BaseState {}
 
-class MainAppEvent extends BaseEventState{}
+class MainAppEvent extends BaseEvent{}
 class MainAppEventInitial extends MainAppEvent{}
