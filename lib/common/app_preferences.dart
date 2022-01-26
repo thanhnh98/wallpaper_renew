@@ -90,7 +90,6 @@ class AppPreferences{
             }
         });
         return isLiked;
-
     }
 
 }

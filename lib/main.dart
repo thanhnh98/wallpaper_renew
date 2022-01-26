@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallpaper/di/get_it.dart';
 
 import 'app.dart';
 
@@ -8,7 +9,7 @@ void main() async {
 }
 
 Future _priorToStart() async{
-  //nothing now
+  buildDependencies();
   return;
 }
 

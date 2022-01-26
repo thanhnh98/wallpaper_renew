@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wallpaper/base/app/base.dart';
 import 'package:wallpaper/base/widget/base.dart';
-import 'package:wallpaper/bloc/home_bloc.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/constant.dart';
 import 'package:wallpaper/common/navigator_custom.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
-import 'package:wallpaper/events/home_event_state.dart';
-import 'package:wallpaper/model/horizontal_landing_item.dart';
-import 'package:wallpaper/model/photo.dart';
+import 'package:wallpaper/model/album_cover.dart';
+import 'package:wallpaper/presentation/bloc/home_bloc.dart';
 import 'package:wallpaper/widgets/draggable_bottom_sheet.dart';
 import 'package:wallpaper/widgets/vertical_left_bar.dart';
 
@@ -38,61 +33,8 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
           return Scaffold(
               body: Stack(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              CommonColor.primaryColorDark,
-                              CommonColor.primaryColor
-                            ])),
-                  ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Hero(tag: "search", child: _buildSearchComponent()),
-                            SizedBox(
-                              height: SizeConfig.verticalSize(2),
-                            ),
-                            _buildSloganComponent(),
-                            SizedBox(
-                              height: SizeConfig.verticalSize(1),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left: SizeConfig.horizontalSize(5)),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "1000+ S.current.photo",
-                                    style: CommonStyle.textStyleCustom(
-                                      size: CommonStyle.super_extra_text_size,
-                                      color: CommonColor.white,
-                                      fontStyle: FontStyle.normal,
-                                    )),
-                              ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.verticalSize(4),
-                            ),
-                            Container(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: _buildListImageItem(),
-                                  ),
-                                )),
-                          ],
-                        ),
-                      )),
+                  _buildBackground(),
+                  _buildBody(),
                   _buildBottomSheet()
                 ],
               ));
@@ -159,13 +101,13 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
 
 
 
-  List<Widget> _buildListImageItem() {
+  List<Widget> _buildListImageCover() {
     List<Widget> listItem = [];
 
     listItem.add(VerticalLeftSideBar());
-    listItem.add(SizedBox(width: 20));
+    listItem.add(const SizedBox(width: 20));
 
-    for (HorizontalLandingItemModel item in Constant.getListTopicLanding()) {
+    for (AlbumCoverModel item in Constant.getListTopicLanding()) {
       listItem.add(_buildItemSingle(item));
     }
 
@@ -173,10 +115,10 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
   }
 
 
-  Widget _buildItemSingle(HorizontalLandingItemModel item) {
+  Widget _buildItemSingle(AlbumCoverModel item) {
     return GestureDetector(
       onTap: () {
-        NavigatorGlobal.pushAlbumHomePage(context, item.url);
+        NavigatorGlobal.pushAlbumHomePage(context, item);
       },
       child: Container(
           width: SizeConfig.horizontalSize(50),
@@ -184,16 +126,19 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
           margin: const EdgeInsets.only(right: 10),
           child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: FadeInImage.assetNetwork(
-                  placeholder: '',
-                  image: item.assetsImageCover,
-                  fit: BoxFit.cover,
-                  height: double.infinity,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                ),
+              Hero(
+                  tag: item.title,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: FadeInImage.assetNetwork(
+                      placeholder: '',
+                      image: item.assetsImageCover,
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    ),
+                  ),
               ),
               //   child: Container(
               //     width: double.infinity,
@@ -228,5 +173,67 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
 
   Widget _buildBottomSheet() {
     return DraggableBottomSheet();
+  }
+
+ Widget _buildBackground() {
+    return
+      Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  CommonColor.primaryColorDark,
+                  CommonColor.primaryColor
+                ])),
+      );
+  }
+
+  Widget _buildBody() {
+    return Container(
+        margin: const EdgeInsets.only(top: 20),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Hero(tag: "search", child: _buildSearchComponent()),
+              SizedBox(
+                height: SizeConfig.verticalSize(2),
+              ),
+              _buildSloganComponent(),
+              SizedBox(
+                height: SizeConfig.verticalSize(1),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    left: SizeConfig.horizontalSize(5)),
+                child: RichText(
+                  text: TextSpan(
+                      text: "1000+ S.current.photo",
+                      style: CommonStyle.textStyleCustom(
+                        size: CommonStyle.super_extra_text_size,
+                        color: CommonColor.white,
+                        fontStyle: FontStyle.normal,
+                      )),
+                ),
+              ),
+              SizedBox(
+                height: SizeConfig.verticalSize(4),
+              ),
+              Container(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: _buildListImageCover(),
+                    ),
+                  )),
+            ],
+          ),
+        ));
   }
 }

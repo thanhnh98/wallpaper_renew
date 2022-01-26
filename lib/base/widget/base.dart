@@ -35,3 +35,29 @@ abstract class BaseStateWidget<T extends BaseStatefulWidget, B extends BaseBloc>
     super.dispose();
   }
 }
+
+abstract class BaseStateCollectionWidget<T extends BaseStatefulWidget, B extends BaseBloc> extends BaseStateWidget<T, B> {
+  ScrollController? scrollController;
+  bool _isLoadingMore = false;
+
+  BaseStateCollectionWidget(){
+    scrollController = ScrollController()
+      ..addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (scrollController != null){
+      if (!_isLoadingMore &&
+          scrollController!.position.pixels >
+              scrollController!.position.maxScrollExtent - 100) {
+        onLoadMore();
+        _isLoadingMore = true;
+      }
+    }
+  }
+
+  void onLoadMore();
+  void onLoadMoreCompleted(){
+    _isLoadingMore = false;
+  }
+}

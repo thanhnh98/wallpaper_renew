@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper/base/app/base.dart';
 import 'package:wallpaper/base/widget/base.dart';
-import 'package:wallpaper/bloc/main_app_bloc.dart';
-import 'package:wallpaper/screen/home/home_page.dart';
+import 'package:wallpaper/app_bloc.dart';
+import 'package:wallpaper/presentation/screen/home_page.dart';
 
 class App extends BaseApp {
   const App({key}) : super(key: key);

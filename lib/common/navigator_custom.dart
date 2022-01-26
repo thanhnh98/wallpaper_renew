@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wallpaper/model/album_cover.dart';
 import 'package:wallpaper/model/photo.dart';
+import 'package:wallpaper/presentation/screen/album_detail_page.dart';
 
 class NavigatorGlobal{
-  static void pushAlbumHomePage(BuildContext context, String url){
-    // Navigator.push(context,
-    //     MaterialPageRoute(builder: (context) => AlbumHomePage(url)));
+  static void pushAlbumHomePage(BuildContext context, AlbumCoverModel albumCoverModel){
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => AlbumDetailPage(albumCoverModel)));
   }
 
   static void pushPhotoDetailPage(BuildContext context, Photo photo){

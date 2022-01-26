@@ -5,15 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wallpaper/base/widget/base.dart';
-import 'package:wallpaper/bloc/draggable_bottom_sheet_bloc.dart';
+import 'package:wallpaper/common/navigator.dart';
+import 'package:wallpaper/widgets/bloc/draggable_bottom_sheet_bloc.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/constant.dart';
 import 'package:wallpaper/common/navigator_custom.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
-import 'package:wallpaper/events/dragable_sheet_event_state.dart';
-import 'package:wallpaper/model/horizontal_landing_item.dart';
+import 'package:wallpaper/model/album_cover.dart';
+import 'package:wallpaper/model/list_image_model.dart';
 import 'package:wallpaper/model/photo.dart';
+
+import 'events/dragable_sheet_event_state.dart';
 
 class DraggableBottomSheet extends BaseStatefulWidget{
   @override
@@ -50,49 +53,23 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
                             right: SizeConfig.horizontalSize(5)),
                         child:  BlocBuilder(
                           bloc: bloc,
-                          buildWhen: (oldState, newState){
-                            return newState is DraggableBottomSheetStateLoaded ||
-                                    newState is DraggableBottomSheetStateInitial;
-                          },
                           builder: (context, state){
-                            print("state ${state}\n");
-                            return GridView.builder(
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
-                                controller: scrollController,
-                                itemCount: 1,
-                                itemBuilder: (context, index){
-                                  return _buildListFavouriteEmpty();
-                                });
+                            print("loaded $state");
+                            if (state is DraggableBottomSheetStateLoaded){
+                              ListImageModel? listImageModel = state.listImageModel;
+                              if (listImageModel == null ||
+                                  listImageModel.photos == null ||
+                                  listImageModel.photos?.isEmpty == true){
+                                return _buildEmpty(scrollController);
+                              }
+                              return _buildListImages(scrollController, listImageModel.photos!);
+                            }
+                            return Container();
                           },
                         )
                     )
           );
-            // return StaggeredGrid.count(
-            //   crossAxisCount: 2,
-            //   controller: scrollController,
-            //   itemCount: listImg.length + 1,
-            //   itemBuilder: (context, index){
-            //     if (index == 0) {
-            //       return SizedBox(
-            //         height: 32,
-            //         child: Padding(
-            //           padding: EdgeInsets.all(10),
-            //           child: RichText(
-            //             text: TextSpan(
-            //               text: "S.current.favourite_list",
-            //               style: CommonStyle.textStyleCustom(
-            //                 size: 24.0,
-            //                 weight: FontWeight.bold,
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     } else {
-            //       return _buildHorizontalItem(listImg[index - 1]);
-            //     }
-            //   },
-            // );
+
           });
   }
 
@@ -160,7 +137,7 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
             children: [
               Align(
                 child: ClipRRect(
-                    borderRadius: new BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: Center(
                         child: Hero(
                           tag: photo.id,
@@ -190,9 +167,9 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.grey[100]?.withOpacity(0.5)),
-                    margin: EdgeInsets.all(8),
+                    margin: const EdgeInsets.all(8),
                     child: Padding(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       child: SvgPicture.asset(imgPath),
                     ),
                   ),
@@ -204,10 +181,10 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
     );
   }
 
-  Widget _buildItemSingle(HorizontalLandingItemModel item) {
+  Widget _buildItemSingle(AlbumCoverModel item) {
     return GestureDetector(
       onTap: () {
-        NavigatorGlobal.pushAlbumHomePage(context, item.url);
+        NavigatorGlobal.pushAlbumHomePage(context, item);
       },
       child: Container(
           width: SizeConfig.horizontalSize(50),
@@ -233,7 +210,7 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
               //   ),
               // ),
               Align(
-                alignment: Alignment(-1, 1),
+                alignment: const Alignment(-1, 1),
                 child: Container(
                   height: 40,
                   decoration: BoxDecoration(
@@ -242,7 +219,7 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
                           topRight: BorderRadius.circular(15).topRight,
                           bottomLeft: BorderRadius.circular(15).bottomLeft)),
                   child: Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: RichText(
                       text: TextSpan(
                           text: item.title,
@@ -251,6 +228,81 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
                     ),
                   ),
                 ),
+              )
+            ],
+          )),
+    );
+  }
+
+  Widget _buildEmpty(ScrollController scrollController) {
+    return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+        controller: scrollController,
+        itemCount: 1,
+        itemBuilder: (context, index){
+          return _buildListFavouriteEmpty();
+        });
+  }
+
+  Widget _buildListImages(ScrollController scrollController, List<Photo> listPhotos){
+    return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        controller: scrollController,
+        itemCount: listPhotos.length,
+        itemBuilder: (context, index){
+          return _itemFavouritePhoto(listPhotos[index]);
+        }
+    );
+  }
+
+  Widget _itemFavouritePhoto(Photo photo) {
+    String imgPath =
+    photo.liked ? "assets/heart_solid.svg" : "assets/heart_empty.svg";
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: GestureDetector(
+          onTap: () {
+              GlobalNavigator.pushPhotoDetailPage(context, photo);
+          },
+          child: Stack(
+            children: [
+              Align(
+                child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Center(
+                        child: Hero(
+                          tag: photo.id,
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/img_loading.gif',
+                            image: photo.src?.tiny??"",
+                            fit: BoxFit.cover,
+                            height: double.infinity,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                          ),
+                        )
+                    )),
+              ),
+              Align(
+                child: GestureDetector(
+                  onTap: () {
+                    photo.liked = !photo.liked;
+                    bloc?.likePhoto(photo, photo.liked);
+                  },
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey[100]?.withOpacity(0.5)),
+                    margin: const EdgeInsets.all(8),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: SvgPicture.asset(imgPath),
+                    ),
+                  ),
+                ),
+                alignment: Alignment.bottomRight,
               )
             ],
           )),
