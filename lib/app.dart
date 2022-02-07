@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:wallpaper/base/app/base.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/app_bloc.dart';

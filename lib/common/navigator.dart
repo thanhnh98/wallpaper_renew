@@ -5,6 +5,7 @@ import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/screen/album_detail_page.dart';
 import 'package:wallpaper/presentation/screen/photo_detail.dart';
 import 'package:wallpaper/presentation/screen/search_page.dart';
+import 'package:wallpaper/presentation/screen/search_result_page.dart';
 import 'package:wallpaper/presentation/screen/view_full_photo_page.dart';
 
 
@@ -23,7 +24,6 @@ class GlobalNavigator {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ViewFullPhotoPage(photo)));
   }
-
 
   static void pushSearchPage(BuildContext context) {
     Navigator.push(context,
