@@ -57,7 +57,12 @@ abstract class BaseStateCollectionWidget<T extends BaseStatefulWidget, B extends
   }
 
   void onLoadMore();
+
   void onLoadMoreCompleted(){
     _isLoadingMore = false;
+  }
+
+  bool shouldShowLoadMore(){
+    return true;
   }
 }

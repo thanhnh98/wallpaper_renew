@@ -55,6 +55,7 @@ dependencies:
   share: ^2.0.4
   get_it: ^7.2.0
   intl_utils: ^2.6.1
+  get: ^4.6.1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 
@@ -87,6 +88,8 @@ flutter:
     #gif
     - img_loading.gif
     - img_loading_2.gif
+    - loading_more.json
+
     #svg
     - heart_solid.svg
     - heart_empty.svg
@@ -98,6 +101,7 @@ flutter:
     #Json
     - finding_image.json
     - lottie_loading.json
+    - loading.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

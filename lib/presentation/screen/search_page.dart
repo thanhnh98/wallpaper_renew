@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/generated/l10n.dart';
+import 'package:wallpaper/model/album_cover.dart';
 import 'package:wallpaper/presentation/bloc/search_bloc.dart';
 import 'package:wallpaper/presentation/events/search_event_state.dart';
+import 'package:wallpaper/presentation/screen/search_result_page.dart';
 
 class SearchPage extends BaseStatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -43,7 +46,9 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
               } else if (state is SearchStateSearching) {
                 return _buildBody(state);
               } else if (state is SearchStateLoadCompleted) {
-
+                return SearchResultPage(state.keyword, (){
+                  bloc?.emit(SearchStateInit());
+                });
               }
               return Container();
             }),
@@ -57,11 +62,16 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
   Widget _buildBody(SearchState state) {
     Widget bodyWidget = Container();
 
-    if (state is SearchStateInit){
+    if (state is SearchStateInit ){
       bodyWidget = _buildSearchBar();
     }
+
+    if (state is SearchStateLoadCompleted){
+      bodyWidget = _buildSearchBar();
+    }
+
     if (state is SearchStateSearching) {
-      bodyWidget = _buildSearchBarOnSearching(state.keyword??"");
+      bodyWidget = _buildSearchBarOnSearching(state.keyword);
     }
 
     return Stack(children: [
@@ -86,42 +96,60 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
   }
 
   Widget _buildSearchBar() {
-    return Hero(
-        tag: "search",
-        child: Material(
-          type: MaterialType.transparency,
-          child: Container(
-              margin: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey.withOpacity(0.7)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: TextField(
-                  enableInteractiveSelection: false,
-                  autofocus: true,
-                  textAlignVertical: TextAlignVertical.center,
-                  maxLines: 1,
-                  style: CommonStyle.textStyleCustom(
-                      size: 20.0, weight: FontWeight.normal),
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: S.current.search,
-                      hintStyle: CommonStyle.textStyleCustom(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: S.current.slogan_search,
+              style: CommonStyle.textStyleCustom(
+                  size: CommonStyle.super_extra_text_size,
+                  weight: FontWeight.bold
+              )
+            )
+        ),
+        SizedBox(
+          height: 32,
+        ),
+        Hero(
+            tag: "search_bar",
+            child: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.withOpacity(0.7)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: TextField(
+                      enableInteractiveSelection: false,
+                      autofocus: true,
+                      textAlignVertical: TextAlignVertical.center,
+                      maxLines: 1,
+                      style: CommonStyle.textStyleCustom(
                           size: 20.0, weight: FontWeight.normal),
-                      icon: const Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      )),
-                  onSubmitted: (text) {
-                    if(text.isNotEmpty) {
-                      bloc?.requestSearch(text);
-                    }
-                  },
-                ),
-              )),
-        ));
+                      textCapitalization: TextCapitalization.sentences,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: S.current.search,
+                          hintStyle: CommonStyle.textStyleCustom(
+                              size: 20.0, weight: FontWeight.normal),
+                          icon: const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          )),
+                      onSubmitted: (text) {
+                        if(text.isNotEmpty) {
+                          bloc?.requestSearch(text);
+                        }
+                      },
+                    ),
+                  )),
+            ))
+      ],
+    );
   }
 
   Widget _buildSearchBarOnSearching(String content){
@@ -131,20 +159,34 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RichText(
-              text: TextSpan(
-                  children: <TextSpan>[
-                    const TextSpan(
-                        text: "Searching for ",
-                        style: CommonStyle.normalTextStyle
-                    ),
-                    TextSpan(
-                        text: "\"content\"",
-                        style: CommonStyle.normalTextStyleBold
-                    )
-                  ]
+          Hero(
+              tag: "search_bar",
+              child: RichText(
+                  text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: "Searching for ",
+                            style: CommonStyle.textStyleCustom(
+                                size: CommonStyle.large_text_size,
+                                color: CommonColor.white,
+                                fontStyle: FontStyle.normal,
+                                weight: FontWeight.normal
+                            )
+                        ),
+                        TextSpan(
+                            text: "\"$content\"",
+                            style: CommonStyle.textStyleCustom(
+                                size: CommonStyle.larger_text_size,
+                                color: CommonColor.white,
+                                fontStyle: FontStyle.normal,
+                                weight: FontWeight.bold
+                            )
+                        )
+                      ]
+                  )
               )
-          )
+          ),
+          Lottie.asset("assets/finding_image.json")
         ],
       ),
     );

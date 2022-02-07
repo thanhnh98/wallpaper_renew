@@ -12,9 +12,7 @@ class BaseEvent{
   factory BaseEvent.initial() => BaseEvent();
 }
 
-class BaseState{
-
-}
+class BaseState{}
 
 
 // ViewState: Data

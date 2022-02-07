@@ -122,9 +122,10 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
       ),
       SliverToBoxAdapter(
         child: Container(
-          padding: const EdgeInsets.only(bottom: 16),
+            height: 100,
+            padding: const EdgeInsets.only(bottom: 16),
           alignment: Alignment.center,
-          child: const CircularProgressIndicator(),
+            child: Lottie.asset("assets/loading_more.json")
         ),
       ),
     ]);
@@ -318,7 +319,6 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
         ),
       )
     );
-
   }
 
   List<Widget> _buildBody(Object? state) {
