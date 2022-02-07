@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wallpaper/base/app/base.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/app_bloc.dart';
+import 'package:wallpaper/common/color_utils.dart';
+import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/presentation/screen/home_page.dart';
 
 class App extends BaseApp {
@@ -44,6 +47,13 @@ class _AppState extends BaseStateWidget<App, MainAppBloc> with WidgetsBindingObs
           theme: initialTheme(),
           title: initialTitle(),
           home: HomePage(),
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
           navigatorObservers: [
             routeObserver
           ],
@@ -74,15 +84,12 @@ class _AppState extends BaseStateWidget<App, MainAppBloc> with WidgetsBindingObs
 
   ThemeData initialTheme() {
     return ThemeData(
-      primaryColor: Colors.blue,
+      primaryColor: CommonColor.primaryColor,
       fontFamily: 'Roboto',
-      textSelectionColor: const Color(0xFFAFE1EF),
     );
   }
-
 
   String initialTitle() {
     return "rebuild wallpaper";
   }
-
 }

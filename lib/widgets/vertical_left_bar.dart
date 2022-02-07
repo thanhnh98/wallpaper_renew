@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wallpaper/common/navigator_custom.dart';
 import 'package:wallpaper/common/style_utils.dart';
+import 'package:wallpaper/generated/l10n.dart';
 
 class VerticalLeftSideBar extends StatefulWidget{
   @override
@@ -30,7 +30,7 @@ class _VerticalLeftSideState extends State<VerticalLeftSideBar>{
               },
               child: RichText(
                 text: TextSpan(
-                    text: "S.current.photo",
+                    text: S.current.photo,
                     style: CommonStyle.textStyleCustom(
                         color: currentTabSelect == photoTabIndex? Colors.white : Colors.grey
                     )
@@ -44,11 +44,11 @@ class _VerticalLeftSideState extends State<VerticalLeftSideBar>{
             child: GestureDetector(
               onTap: (){
                 //onTabSelected(videoTabIndex);
-                NavigatorGlobal.pushVideoPage(context);
+                //NavigatorGlobal.pushVideoPage(context);
                 },
               child: RichText(
                 text: TextSpan(
-                  text: "S.current.video",
+                  text: S.current.video,
                   style: CommonStyle.textStyleCustom(
                       color: currentTabSelect == videoTabIndex? Colors.white : Colors.grey
                   ),

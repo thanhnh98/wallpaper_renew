@@ -11,9 +11,9 @@ import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
+import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/model/album.dart';
 import 'package:wallpaper/model/album_cover.dart';
-import 'package:wallpaper/model/list_image_model.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/album_detail_bloc.dart';
 import 'package:wallpaper/presentation/events/album_deatail_event_state.dart';
@@ -54,27 +54,6 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
                       slivers: _buildBody(state)
                     );
                   }
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  top: 16,
-                ),
-                child: Container(
-                  width: 32,
-                  height: 32,
-                  child: GestureDetector(
-                    onTap: (){
-                      GlobalNavigator.back(context);
-                    },
-                    child: const Icon(Icons.arrow_back, color: Colors.white),
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.6),
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(16)
-                      )),
-                ),
               )
             ],
           )
@@ -100,7 +79,7 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
             ),
             RichText(
               text: TextSpan(
-                  text: "S.current.give_a_second",
+                  text: S.current.give_a_cond,
                   style: CommonStyle.textStyleCustom(size: 24.0)),
             ),
             const SizedBox(
@@ -135,9 +114,9 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
             children: List.generate(data.length, (index) {
               return Padding(
                   padding: EdgeInsets.only(
-                      left: index % 2 == 0 ? 10 : 5,
-                      right: index % 2 == 0 ? 5 : 10,
-                      top: 10),
+                      left: index % 2 == 0 ? 4 : 2,
+                      right: index % 2 == 0 ? 2 : 4,
+                      top: 4),
                   child: _buildItemImage(data[index]));
             })),
       ),
@@ -193,7 +172,7 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
               ),
               RichText(
                 text: TextSpan(
-                    text: "S.current.empty_title",
+                    text: S.current.empty_title,
                     style: CommonStyle.textStyleCustom(
                         size: 16.0, weight: FontWeight.normal)),
                 textAlign: TextAlign.center,
@@ -248,21 +227,19 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
         child: Stack(
           children: [
             Align(
-              child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: Center(
-                      child: Hero(
-                        tag: photo.id,
-                        child:  FadeInImage.assetNetwork(
-                          placeholder: 'assets/img_loading.gif',
-                          image: photo.src?.tiny??"",
-                          fit: BoxFit.cover,
-                          height: double.infinity,
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                        ),
-                      )
-                  )),
+              child: Center(
+                  child: Hero(
+                    tag: photo.id,
+                    child:  FadeInImage.assetNetwork(
+                      placeholder: 'assets/img_loading.gif',
+                      image: photo.src?.tiny??"",
+                      fit: BoxFit.cover,
+                      height: double.infinity,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                    ),
+                  )
+              )
             ),
             Align(
               child: GestureDetector(
@@ -281,9 +258,9 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.grey[100]?.withOpacity(0.5)),
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   child: Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: SvgPicture.asset(imgPath),
                   ),
                 ),
@@ -305,41 +282,41 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
 
   Widget _buildAppBar() {
     return SliverAppBar(
-      pinned: false,
+      backgroundColor: CommonColor.primaryColor,
+      pinned: true,
       snap: false,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: (){
+          GlobalNavigator.back(context);
+        },
+      ),
       expandedHeight: 160,
-      automaticallyImplyLeading: false,
-      flexibleSpace: Stack(
-        children: [
-          Hero(
-            tag: albumCoverModel.title,
-            child: ClipRRect(
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                child: FadeInImage.assetNetwork(
-                  placeholder: '',
-                  image: albumCoverModel.assetsImageCover,
-                  fit: BoxFit.cover,
-                  height: double.infinity,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                ),
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: RichText(
+          text: TextSpan(
+            text: albumCoverModel.title,
+            style: CommonStyle.normalTextStyleBold
+          ),
+        ),
+        background: Hero(
+          tag: albumCoverModel.title,
+          child: ClipRRect(
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+              child: FadeInImage.assetNetwork(
+                placeholder: 'assets/empty.png',
+                image: albumCoverModel.assetsImageCover,
+                fit: BoxFit.cover,
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
               ),
             ),
           ),
-          Align(
-              alignment: Alignment.center,
-              child: RichText(
-                  text: TextSpan(
-                      text: albumCoverModel.title,
-                      style: CommonStyle.textStyleCustom(
-                        size: 32.0,
-                      )
-                  )
-              ),
-          )
-        ],
-      ),
+        ),
+      )
     );
 
   }
@@ -359,5 +336,11 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
       listWidgets.add(_buildViewError());
     }
     return listWidgets;
+  }
+
+  @override
+  void dispose() {
+    _lottieController?.dispose();
+    super.dispose();
   }
 }

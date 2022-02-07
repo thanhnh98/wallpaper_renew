@@ -6,10 +6,10 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/navigator.dart';
+import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/widgets/bloc/draggable_bottom_sheet_bloc.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/constant.dart';
-import 'package:wallpaper/common/navigator_custom.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/model/album_cover.dart';
@@ -19,6 +19,8 @@ import 'package:wallpaper/model/photo.dart';
 import 'events/dragable_sheet_event_state.dart';
 
 class DraggableBottomSheet extends BaseStatefulWidget{
+  const DraggableBottomSheet({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _DraggableBottomSheet();
 
@@ -53,8 +55,14 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
                             right: SizeConfig.horizontalSize(5)),
                         child:  BlocBuilder(
                           bloc: bloc,
+                          buildWhen: (prevState, newState){
+                            bool shouldBuild = true;
+                            if (newState is DraggableBottomSheetStateLoaded && prevState is DraggableBottomSheetStateLoaded){
+                              shouldBuild = newState.listImageModel?.photos != prevState.listImageModel?.photos;
+                            }
+                            return shouldBuild;
+                          },
                           builder: (context, state){
-                            print("loaded $state");
                             if (state is DraggableBottomSheetStateLoaded){
                               ListImageModel? listImageModel = state.listImageModel;
                               if (listImageModel == null ||
@@ -88,7 +96,7 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
             child: Center(
               child: RichText(
                 text: TextSpan(
-                  text: "S.current.favourite_list",
+                  text: S.current.favourite_list,
                   style: CommonStyle.textStyleCustom(
                     size: 20.0,
                     weight: FontWeight.bold,
@@ -114,7 +122,7 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: "S.current.favourite_photo_des",
+              text: S.current.favourite_photo_des,
               style: CommonStyle.textStyleCustom(
                 size: 14.0,
                 weight: FontWeight.normal,
@@ -184,18 +192,17 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
   Widget _buildItemSingle(AlbumCoverModel item) {
     return GestureDetector(
       onTap: () {
-        NavigatorGlobal.pushAlbumHomePage(context, item);
-      },
+        },
       child: Container(
           width: SizeConfig.horizontalSize(50),
           height: SizeConfig.verticalSize(40),
-          margin: EdgeInsets.only(right: 10),
+          margin: const EdgeInsets.only(right: 10),
           child: Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: FadeInImage.assetNetwork(
-                  placeholder: '',
+                  placeholder: 'assets/empty.png',
                   image: item.assetsImageCover,
                   fit: BoxFit.cover,
                   height: double.infinity,

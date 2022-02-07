@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class CommonColor{
-  static Color primaryColor = Color(0xff283593);
+  static Color primaryColor = const Color(0xff283593);
   static Color primaryColorLight = Color(0xff5f5fc4);
   static Color primaryColorDark = Color(0xff001064);
   static Color primaryColorAccent = Color(0xff3490dc);

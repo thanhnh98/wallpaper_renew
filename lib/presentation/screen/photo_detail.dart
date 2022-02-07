@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wallpaper/base/widget/base.dart';
+import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/style_utils.dart';
+import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/photo_detail_bloc.dart';
 
@@ -50,7 +52,7 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
       child: Hero(
         tag: _photo.id,
         child: FadeInImage.assetNetwork(
-          placeholder: '',
+          placeholder: 'assets/empty.png',
           image: _photo.src?.portrait??"",
           fit: BoxFit.cover,
           alignment: Alignment.center,
@@ -71,7 +73,7 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildTitle("S.current.info"),
+                  _buildTitle(S.current.info),
                   RichText(
                       text: TextSpan(
                           text: "(${_photo.width}x${_photo.height})",
@@ -110,7 +112,7 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildTitle("S.current.options"),
+                    _buildTitle(S.current.options),
                     const SizedBox(
                       height: 10,
                     ),
@@ -257,7 +259,7 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RichText(text: TextSpan(text: "S.current.photo_by")),
+            RichText(text: TextSpan(text: S.current.photo_by)),
             Flexible(
                 child: RichText(
               text: TextSpan(
@@ -271,7 +273,7 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
         ),
         Row(
           children: [
-            RichText(text: const TextSpan(text: "S.current.contact")),
+            RichText(text: TextSpan(text: S.current.contact)),
             Flexible(
               child: GestureDetector(
                 onTap: () {
@@ -296,7 +298,7 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
   }
 
   void _openFullScreen() {
-
+    GlobalNavigator.pushViewFullPhotoPage(context, _photo);
   }
 
   @override

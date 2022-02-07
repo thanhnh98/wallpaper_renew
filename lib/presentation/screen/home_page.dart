@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/constant.dart';
-import 'package:wallpaper/common/navigator_custom.dart';
+import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
+import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/model/album_cover.dart';
 import 'package:wallpaper/presentation/bloc/home_bloc.dart';
 import 'package:wallpaper/widgets/draggable_bottom_sheet.dart';
@@ -46,7 +47,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
       margin: EdgeInsets.only(left: SizeConfig.horizontalSize(5)),
       child: RichText(
         text: TextSpan(
-            text: "App slogan",
+            text: S.current.app_slogan,
             style: CommonStyle.textStyleCustom(
                 size: CommonStyle.normal_text_size,
                 color: CommonColor.white,
@@ -59,7 +60,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
   Widget _buildSearchComponent() {
     return GestureDetector(
       onTap: () {
-        NavigatorGlobal.pushSearchPage(context);
+        GlobalNavigator.pushSearchPage(context);
       },
       child: Container(
         height: 50,
@@ -80,7 +81,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
                 alignment: Alignment(-1, 0),
                 child: RichText(
                   text: TextSpan(
-                      text: "S.current.search",
+                      text: S.current.search,
                       style: CommonStyle.textStyleCustom(
                           size: 18.0, weight: FontWeight.normal)),
                 ),
@@ -118,7 +119,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
   Widget _buildItemSingle(AlbumCoverModel item) {
     return GestureDetector(
       onTap: () {
-        NavigatorGlobal.pushAlbumHomePage(context, item);
+        GlobalNavigator.pushAlbumHomePage(context, item);
       },
       child: Container(
           width: SizeConfig.horizontalSize(50),
@@ -131,7 +132,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15),
                     child: FadeInImage.assetNetwork(
-                      placeholder: '',
+                      placeholder: 'assets/empty.png',
                       image: item.assetsImageCover,
                       fit: BoxFit.cover,
                       height: double.infinity,
@@ -200,7 +201,10 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Hero(tag: "search", child: _buildSearchComponent()),
+              Hero(
+                  tag: "search",
+                  child: _buildSearchComponent()
+              ),
               SizedBox(
                 height: SizeConfig.verticalSize(2),
               ),
@@ -213,7 +217,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
                     left: SizeConfig.horizontalSize(5)),
                 child: RichText(
                   text: TextSpan(
-                      text: "1000+ S.current.photo",
+                      text: "1000+ ${S.current.photo}",
                       style: CommonStyle.textStyleCustom(
                         size: CommonStyle.super_extra_text_size,
                         color: CommonColor.white,
