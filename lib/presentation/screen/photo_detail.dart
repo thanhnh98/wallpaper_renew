@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
+import 'package:wallpaper/common/manager/wallpaper_manager.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/generated/l10n.dart';
@@ -197,11 +198,16 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
   }
 
   Widget _buildIconSetBackground(){
-    return _buildIcon(
-        const Icon(
-          Icons.photo,
-          size: 24,
-        )
+    return GestureDetector(
+      onTap: (){
+        bloc?.requestSetBackground();
+      },
+      child: _buildIcon(
+          const Icon(
+            Icons.photo,
+            size: 24,
+          )
+      ),
     );
   }
 
