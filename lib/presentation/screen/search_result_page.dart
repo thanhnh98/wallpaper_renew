@@ -30,7 +30,12 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return Stack(
+      children: [
+        Container(
+          color: CommonColor.black_33,
+        ),
+        BlocBuilder(
         bloc: bloc,
         builder: (context, state){
           if (state is SearchResultStateLoaded) {
@@ -38,6 +43,8 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
           }
           return _buildBody(state);
         }
+        )
+      ],
     );
   }
 
@@ -74,6 +81,12 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
       else {
         widgets.addAll([
           CupertinoSliverRefreshControl(
+            builder: (context, mode, v1, v2, v3){
+              return Container(
+                width: 50,
+                child: Lottie.asset("assets/lottie_loading.json"),
+              );
+            },
             onRefresh: () async {
               print("REFRESH");
             },
@@ -106,7 +119,33 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
   }
 
   Widget _buildEmpty() {
-    return Container();
+    return SliverToBoxAdapter(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 100,
+          ),
+          Image.asset("assets/empty_image.png"),
+          SizedBox(
+            height: 20,
+          ),
+          RichText(text: TextSpan(
+            children: [
+              const TextSpan(
+                text: "Không tìm thấy kết quả cho: ",
+                style: CommonStyle.normalTextStyle
+              ),
+              TextSpan(
+                text: "\"$keyword\"",
+                style: CommonStyle.normalTextStyleBold
+              )
+            ]
+          ))
+        ]
+      ),
+    );
   }
 
   Widget _buildAppBar() {
@@ -115,7 +154,7 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
         pinned: true,
         snap: false,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.search, color: Colors.white),
           onPressed: (){
             onBack();
           },
@@ -124,9 +163,10 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
           tag: "search_bar",
           child: FlexibleSpaceBar(
             title: RichText(
+              textAlign: TextAlign.left,
               text: TextSpan(
                   children: [
-                    TextSpan(
+                    const TextSpan(
                         text: "Result for ",
                         style: CommonStyle.normalTextStyle
                     ),

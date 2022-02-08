@@ -40,6 +40,7 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
   @override
   Widget build(BuildContext context) {
       return SafeArea(
+
           child: Stack(
             children: [
               Container(
@@ -197,8 +198,8 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
                       children: [
                         Flexible(
                             child: RichText(
-                          text: const TextSpan(
-                              text: "S.current.try_again",
+                          text: TextSpan(
+                              text: S.current.try_again,
                               style: CommonStyle.titleTextStyle),
                         )),
                         const SizedBox(

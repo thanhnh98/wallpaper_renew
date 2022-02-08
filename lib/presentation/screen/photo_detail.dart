@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wallpaper/base/widget/base.dart';
+import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/photo_detail_bloc.dart';
+import 'package:wallpaper/presentation/events/photo_detail_event_state.dart';
 
 class PhotoDetailPage extends BaseStatefulWidget {
   Photo _photo;
@@ -20,27 +23,38 @@ class PhotoDetailPage extends BaseStatefulWidget {
 class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc> {
   Photo _photo;
   double itemSize = 40;
+  int percent = -1;
+
   _PhotoDetailState(this._photo);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildImage(),
-                SizedBox(
-                  height: 5,
+      body: BlocBuilder(
+        bloc: bloc,
+        builder: (context, state){
+          if (state is PhotoDetailStateDownloadImage) {
+            percent = state.downloadedPercent??0;
+          }
+
+          return SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildImage(),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    _buildOptionsBar(),
+                    _buildBottomInfo()
+                  ],
                 ),
-                _buildOptionsBar(),
-                _buildBottomInfo()
-              ],
-            ),
-          )
-      ),
+              )
+          );
+        },
+      )
     );
   }
 
@@ -101,66 +115,74 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
   }
 
   Widget _buildOptionsBar() {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Colors.grey),
-            child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildTitle(S.current.options),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        _buildIconDownload(),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        _buildIconZoom(),
-                        const SizedBox(width: 15,),
-                        _buildIconSetBackground(),
-                        const SizedBox(width: 15,),
-                        _buildIconFavourite(),
-                        const SizedBox(width: 15,),
-                        _buildIconSharing()
-                      ],
-                    ),
-                  ],
-                ))),
-      ),
+    return Padding(
+      padding: EdgeInsets.all(5.0),
+      child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.grey),
+          child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTitle(S.current.options),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      _buildIconDownload(),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      _buildIconZoom(),
+                      const SizedBox(width: 15,),
+                      _buildIconSetBackground(),
+                      const SizedBox(width: 15,),
+                      _buildIconFavourite(),
+                      const SizedBox(width: 15,),
+                      _buildIconSharing()
+                    ],
+                  ),
+                ],
+              ))),
     );
   }
 
   Widget _buildIconDownload() {
-    return _buildIcon(
-      const Icon(
+    Widget icon;
+
+    if (percent == -1) {
+      icon = const Icon(
         Icons.arrow_downward_outlined,
         size: 24,
+      );
+    }
+    else if (percent == 100){
+      icon = SvgPicture.asset("assets/ic_completed.svg");
+    }
+    else {
+      icon = RichText(
+          text: TextSpan(
+            text: "$percent%",
+            style: CommonStyle.textStyleCustom(
+              color: CommonColor.primaryColor
+            )
+          )
+      );
+    }
+
+
+    return GestureDetector(
+      onTap: (){
+        if (percent == -1 && _photo.src != null && _photo.src?.original != null && _photo.src?.original.isNotEmpty == true){
+            bloc?.downloadImage();
+          }
+      },
+      child: _buildIcon(
+          icon
       ),
     );
-    // return DownloadProgressProvider(
-    //     data: _photo,
-    //     child: ProcessingWidget(
-    //       processingStream: _photoBloc.imageDownloadedPercent,
-    //       child: GestureDetector(
-    //           onTap: () {
-    //             _photoBloc.downloadImage(_photo.src.original);
-    //           },
-    //           child: _buildIcon(
-    //             Icon(
-    //               Icons.arrow_downward_outlined,
-    //               size: 24,
-    //             ),
-    //           )
-    //       ),
-    //     )
-    // );
   }
 
   Widget _buildIconZoom() {
@@ -176,27 +198,11 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
 
   Widget _buildIconSetBackground(){
     return _buildIcon(
-        Icon(
+        const Icon(
           Icons.photo,
           size: 24,
         )
     );
-    // return GestureDetector(
-    //   onTap: (){
-    //     showDialog(
-    //         context: context,
-    //         builder: (contet){
-    //           return WallpaperDialog(_photo);
-    //         }
-    //     );
-    //   },
-    //   child: _buildIcon(
-    //     Icon(
-    //       Icons.photo,
-    //       size: 24,
-    //     )
-    //   ),
-    // );
   }
 
   Widget _buildIconSharing(){
@@ -233,7 +239,7 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
       onTap: (){
         setState(() {
           _photo.liked = !_photo.liked;
-          bloc?.putLikeImage(_photo, _photo.liked);
+          bloc?.putLikeImage(_photo.liked);
         });
       },
       child: _buildIcon(
@@ -303,6 +309,6 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
 
   @override
   PhotoDetailBloc? initBloc() {
-    return PhotoDetailBloc();
+    return PhotoDetailBloc(_photo);
   }
 }
