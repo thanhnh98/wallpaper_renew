@@ -9,24 +9,24 @@ import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/style_utils.dart';
-import 'package:wallpaper/model/album.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/search_result_bloc.dart';
+import 'package:wallpaper/presentation/events/search_event_state.dart';
 import 'package:wallpaper/presentation/events/search_result_state_event.dart';
 
 class SearchResultPage extends BaseStatefulWidget {
-  String keyword;
+  SearchStateLoadCompleted? searchCompletedState;
   Function onBack;
-  SearchResultPage(this.keyword, this.onBack, {Key? key}) : super(key: key);
+  SearchResultPage(this.searchCompletedState, this.onBack, {Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SearchResultPageState(this.keyword, this.onBack);
+  State<StatefulWidget> createState() => _SearchResultPageState(searchCompletedState, onBack);
 }
 
 class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage, SearchResultBloc> {
-  String keyword;
+  SearchStateLoadCompleted? searchCompletedState;
   Function onBack;
-  _SearchResultPageState(this.keyword, this.onBack);
+  _SearchResultPageState(this.searchCompletedState, this.onBack);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
 
   @override
   SearchResultBloc? initBloc() {
-     return SearchResultBloc(keyword);
+     return SearchResultBloc(searchCompletedState);
   }
 
   @override
@@ -138,7 +138,7 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
                 style: CommonStyle.normalTextStyle
               ),
               TextSpan(
-                text: "\"$keyword\"",
+                text: "\"${this.searchCompletedState?.keyword}\"",
                 style: CommonStyle.normalTextStyleBold
               )
             ]
@@ -171,7 +171,7 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
                         style: CommonStyle.normalTextStyle
                     ),
                     TextSpan(
-                        text: "\"$keyword\"",
+                        text: "\"${searchCompletedState?.keyword}\"",
                         style: CommonStyle.normalTextStyleBold
                     )
                   ]

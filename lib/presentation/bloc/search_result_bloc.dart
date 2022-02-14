@@ -5,14 +5,15 @@ import 'package:wallpaper/helper/image_cached_helper.dart';
 import 'package:wallpaper/model/album.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/network/repositories/photo_repository.dart';
+import 'package:wallpaper/presentation/events/search_event_state.dart';
 import 'package:wallpaper/presentation/events/search_result_state_event.dart';
 
 class SearchResultBloc extends BaseBloc<SearchResultEvent, SearchResultState> {
   PhotoRepository? photoRepo = getPhotoRepo();
   AlbumModel? _albumDetail;
-  String keyword;
+  SearchStateLoadCompleted? searchCompletedState;
 
-  SearchResultBloc(this.keyword) : super(SearchResultStateLoading()){
+  SearchResultBloc(this.searchCompletedState) : super(SearchResultStateLoading()){
     on((event, emit) => {
         if (event is SearchResultEventLoading){
             emit.call(SearchResultStateLoading())
@@ -39,7 +40,7 @@ class SearchResultBloc extends BaseBloc<SearchResultEvent, SearchResultState> {
   }
 
   Future<void> requestSearch() async{
-    AlbumModel? result = await photoRepo?.searchPhotos(keyword);
+    AlbumModel? result = await photoRepo?.searchPhotos(searchCompletedState?.keywordTranslated??"");
     if (result == null) {
       return;
     }

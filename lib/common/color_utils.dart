@@ -12,6 +12,7 @@ class CommonColor{
   static Color backgroundGradientEnd = Color(0xffffffff);
   static Color gray_f6 = Color(0xfff6f6f6);
   static Color gray_eb = Color(0xffebebeb);
+  static Color gray_7b = Color(0xff7b7b7b);
 
   static Color alphaBlend(Color foreground, Color background) {
     final int alpha = foreground.alpha;

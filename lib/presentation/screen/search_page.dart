@@ -5,13 +5,13 @@ import 'package:lottie/lottie.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/navigator.dart';
-import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/generated/l10n.dart';
-import 'package:wallpaper/model/album_cover.dart';
+import 'package:wallpaper/model/language.dart';
 import 'package:wallpaper/presentation/bloc/search_bloc.dart';
 import 'package:wallpaper/presentation/events/search_event_state.dart';
 import 'package:wallpaper/presentation/screen/search_result_page.dart';
+import 'package:wallpaper/widgets/language_switcher.dart';
 
 class SearchPage extends BaseStatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -23,6 +23,7 @@ class SearchPage extends BaseStatefulWidget {
 class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
   bool isFocused = true;
   FocusNode focusNode = FocusNode();
+  LanguageSwitcherController? _languageSwitcherController = LanguageSwitcherController();
 
   _SearchPageState(){
     focusNode.addListener(() {
@@ -46,8 +47,13 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
               } else if (state is SearchStateSearching) {
                 return _buildBody(state);
               } else if (state is SearchStateLoadCompleted) {
-                return SearchResultPage(state.keyword, (){
-                  bloc?.emit(SearchStateInit());
+                print("state: ${state.language}");
+                return SearchResultPage(state, (){
+                  bloc?.reInit(
+                      state.keyword,
+                      state.keywordTranslated,
+                      state.language
+                  );
                 });
               }
               return Container();
@@ -63,15 +69,15 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
     Widget bodyWidget = Container();
 
     if (state is SearchStateInit ){
-      bodyWidget = _buildSearchBar();
+      bodyWidget = _buildSearchBar(state);
     }
 
     if (state is SearchStateLoadCompleted){
-      bodyWidget = _buildSearchBar();
+      bodyWidget = _buildSearchBar(state);
     }
 
     if (state is SearchStateSearching) {
-      bodyWidget = _buildSearchBarOnSearching(state.keyword);
+      bodyWidget = _buildSearchBarOnSearching(state.keyword??"");
     }
 
     return Stack(children: [
@@ -95,7 +101,11 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
     ]);
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(SearchState state) {
+    String? keyword = state.keyword;
+    String? keywordTranslated = state.keywordTranslated;
+    Language? language = state.language;
+    print("language: $language");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -109,7 +119,7 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
               )
             )
         ),
-        SizedBox(
+        const SizedBox(
           height: 32,
         ),
         Hero(
@@ -117,7 +127,7 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
             child: Material(
               type: MaterialType.transparency,
               child: Container(
-                  margin: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.only(left: 16, top: 10, bottom: 10, right: 16),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.grey.withOpacity(0.7)),
@@ -141,13 +151,23 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
                             color: Colors.white,
                           )),
                       onSubmitted: (text) {
+                        print("search on lang: ${ _languageSwitcherController?.currentLanguage}");
+
                         if(text.isNotEmpty) {
-                          bloc?.requestSearch(text);
+                          bloc?.requestSearch(text, _languageSwitcherController?.currentLanguage??Language.VI);
                         }
                       },
                     ),
                   )),
-            ))
+            )
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16),
+          child: LanguageSwitcher(
+            controller: _languageSwitcherController,
+            defaultLanguage: language??Language.VI,
+          ),
+        ),
       ],
     );
   }

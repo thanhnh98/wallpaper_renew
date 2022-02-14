@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/manager/wallpaper_manager.dart';
@@ -137,8 +140,14 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
                         width: 15,
                       ),
                       _buildIconZoom(),
-                      const SizedBox(width: 15,),
-                      _buildIconSetBackground(),
+                      if (Platform.isAndroid)
+                        const SizedBox(width: 15,)
+                      else
+                        Container(),
+                      if (Platform.isAndroid)
+                          _buildIconSetBackground()
+                      else
+                        Container(),
                       const SizedBox(width: 15,),
                       _buildIconFavourite(),
                       const SizedBox(width: 15,),
@@ -167,7 +176,8 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
           text: TextSpan(
             text: "$percent%",
             style: CommonStyle.textStyleCustom(
-              color: CommonColor.primaryColor
+              color: CommonColor.primaryColor,
+              size: 10.0
             )
           )
       );
@@ -212,28 +222,32 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
   }
 
   Widget _buildIconSharing(){
-    return _buildIcon(
-        Icon(
-          Icons.share,
-          size: 24,
-        )
+    return GestureDetector(
+      onTap: (){
+        print("click");
+        _onShare(context);
+      },
+      child: _buildIcon(
+          Icon(
+            Icons.share,
+            size: 24,
+          )
+      ),
     );
-    // return GestureDetector(
-    //   onTap: (){
-    //     showDialog(
-    //         context: context,
-    //         builder: (contet){
-    //           return SharePhotoDialog(_photo);
-    //         }
-    //     );
-    //   },
-    //   child: _buildIcon(
-    //       Icon(
-    //         Icons.share,
-    //         size: 24,
-    //       )
-    //   ),
-    // );
+  }
+  void _onShare(BuildContext context) async {
+    // A builder is used to retrieve the context immediately
+    // surrounding the ElevatedButton.
+    //
+    // The context's `findRenderObject` returns the first
+    // RenderObject in its descendent tree when it's not
+    // a RenderObjectWidget. The ElevatedButton's RenderObject
+    // has its position and size after it's built.
+    final box = context.findRenderObject() as RenderBox?;
+    await Share.share(
+        "SHARE Ne",
+        subject: "subject",
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 
   Widget _buildIconFavourite(){

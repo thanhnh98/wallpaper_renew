@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/generated/l10n.dart';
+import 'package:wallpaper/presentation/events/main_event_state.dart';
 import 'package:wallpaper/widgets/bloc/draggable_bottom_sheet_bloc.dart';
 import 'package:wallpaper/common/color_utils.dart';
-import 'package:wallpaper/common/constant.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/model/album_cover.dart';
@@ -51,7 +50,6 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
                     child: Padding(
                         padding: EdgeInsets.only(
                             left: SizeConfig.horizontalSize(5),
-                            top: SizeConfig.horizontalSize(5),
                             right: SizeConfig.horizontalSize(5)),
                         child:  BlocBuilder(
                           bloc: bloc,
@@ -92,7 +90,7 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: Center(
               child: RichText(
                 text: TextSpan(
@@ -106,7 +104,6 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
             )),
         GestureDetector(
           onTap: (){
-            print("on tapped ${bloc}");
             bloc?.loadImage();
           },
           child: Center(
@@ -183,58 +180,6 @@ class _DraggableBottomSheet extends BaseStateWidget<DraggableBottomSheet, Dragga
                   ),
                 ),
                 alignment: Alignment.bottomRight,
-              )
-            ],
-          )),
-    );
-  }
-
-  Widget _buildItemSingle(AlbumCoverModel item) {
-    return GestureDetector(
-      onTap: () {
-        },
-      child: Container(
-          width: SizeConfig.horizontalSize(50),
-          height: SizeConfig.verticalSize(40),
-          margin: const EdgeInsets.only(right: 10),
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/empty.png',
-                  image: item.assetsImageCover,
-                  fit: BoxFit.cover,
-                  height: double.infinity,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                ),
-              ),
-              //   child: Container(
-              //     width: double.infinity,
-              //     height: double.infinity,
-              //     color: Colors.blueGrey,
-              //   ),
-              // ),
-              Align(
-                alignment: const Alignment(-1, 1),
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.6),
-                      borderRadius: BorderRadius.only(
-                          topRight: BorderRadius.circular(15).topRight,
-                          bottomLeft: BorderRadius.circular(15).bottomLeft)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: RichText(
-                      text: TextSpan(
-                          text: item.title,
-                          style:
-                          CommonStyle.textStyleCustom(color: Colors.white)),
-                    ),
-                  ),
-                ),
               )
             ],
           )),
