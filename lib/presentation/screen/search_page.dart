@@ -47,7 +47,6 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
               } else if (state is SearchStateSearching) {
                 return _buildBody(state);
               } else if (state is SearchStateLoadCompleted) {
-                print("state: ${state.language}");
                 return SearchResultPage(state, (){
                   bloc?.reInit(
                       state.keyword,
@@ -105,7 +104,6 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
     String? keyword = state.keyword;
     String? keywordTranslated = state.keywordTranslated;
     Language? language = state.language;
-    print("language: $language");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -151,8 +149,6 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
                             color: Colors.white,
                           )),
                       onSubmitted: (text) {
-                        print("search on lang: ${ _languageSwitcherController?.currentLanguage}");
-
                         if(text.isNotEmpty) {
                           bloc?.requestSearch(text, _languageSwitcherController?.currentLanguage??Language.VI);
                         }
@@ -180,12 +176,12 @@ class _SearchPageState extends BaseStateWidget<SearchPage, SearchBloc> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Hero(
-              tag: "search_bar",
+              tag: "search",
               child: RichText(
                   text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: "Searching for ",
+                            text: S.current.searching_text,
                             style: CommonStyle.textStyleCustom(
                                 size: CommonStyle.large_text_size,
                                 color: CommonColor.white,

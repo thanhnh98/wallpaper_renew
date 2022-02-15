@@ -35,7 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "favourite_list":
             MessageLookupByLibrary.simpleMessage("Favorite photos"),
         "favourite_photo_des": MessageLookupByLibrary.simpleMessage(
-            "Let\'s discover and save the best moments. <3"),
+            "Let\'s discover and save bunch of moments. <3"),
         "give_a_cond": MessageLookupByLibrary.simpleMessage("Give a second..."),
         "home_screen": MessageLookupByLibrary.simpleMessage("Home Screen"),
         "info": MessageLookupByLibrary.simpleMessage("Info"),
@@ -48,8 +48,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "photo": MessageLookupByLibrary.simpleMessage("Photos"),
         "photo_by": MessageLookupByLibrary.simpleMessage("Photo by "),
         "random": MessageLookupByLibrary.simpleMessage("Country"),
+        "result_for": MessageLookupByLibrary.simpleMessage("Result for "),
         "school": MessageLookupByLibrary.simpleMessage("School"),
         "search": MessageLookupByLibrary.simpleMessage("Search photo..."),
+        "searching_text":
+            MessageLookupByLibrary.simpleMessage("Searching for "),
         "select_one": MessageLookupByLibrary.simpleMessage("Select one"),
         "share_now": MessageLookupByLibrary.simpleMessage("Share this photo"),
         "slogan_search":

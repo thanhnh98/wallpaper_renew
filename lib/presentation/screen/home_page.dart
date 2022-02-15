@@ -201,10 +201,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Hero(
-                  tag: "search",
-                  child: _buildSearchComponent()
-              ),
+              _buildSearchComponent(),
               SizedBox(
                 height: SizeConfig.verticalSize(2),
               ),

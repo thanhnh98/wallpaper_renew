@@ -224,7 +224,6 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
   Widget _buildIconSharing(){
     return GestureDetector(
       onTap: (){
-        print("click");
         _onShare(context);
       },
       child: _buildIcon(
@@ -245,8 +244,8 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
     // has its position and size after it's built.
     final box = context.findRenderObject() as RenderBox?;
     await Share.share(
-        "SHARE Ne",
-        subject: "subject",
+        _photo.src?.original??"",
+        subject: "Share as: ",
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 

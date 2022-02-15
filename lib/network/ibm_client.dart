@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallpaper/di/get_it.dart';
 
-const _IBM_URL = "https://api.us-east.language-translator.watson.cloud.ibm.com/instancaes/33058864d-8fa7-4c94-9363-47dde4251447/v3/";
+final String _IBM_URL = getAppConfigFlavor().variants["IBM_BASE_URL"];
 
 class IBMClient{
   final IBMClientOptions _client = IBMClientOptions(http.Client());
 
   Future<http.Response> post(String path, {String? body}) {
-    String url = "https://api.us-east.language-translator.watson.cloud.ibm.com/instances/3058864d-8fa7-4c94-9363-47dde4251447/v3/translate?version=2018-05-01";
-    print("POST IBM: $url \n body: $body");
+    String url = "$_IBM_URL$path";
     return _client.post(Uri.parse(url), body: body);
   }
 }

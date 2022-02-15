@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:wallpaper/app_config.dart';
 import 'package:wallpaper/base/app/base.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/app_bloc.dart';
@@ -9,16 +10,20 @@ import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/presentation/screen/home_page.dart';
 
+
+
 class App extends BaseApp {
-  const App({key}) : super(key: key);
+  AppConfig appConfig;
+  App(this.appConfig, {key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _AppState();
+  State<StatefulWidget> createState() => _AppState(appConfig);
 }
 
 class _AppState extends BaseStateWidget<App, MainAppBloc> with WidgetsBindingObserver{
+  AppConfig appConfig;
 
-  _AppState(): super();
+  _AppState(this.appConfig): super();
 
   @override
   MainAppBloc? initBloc() {
@@ -43,10 +48,10 @@ class _AppState extends BaseStateWidget<App, MainAppBloc> with WidgetsBindingObs
     Widget body = WillPopScope(
         onWillPop: () async => false, // disable pop
         child: MaterialApp(
-          color: initialColor(),
-          debugShowCheckedModeBanner: false,
+          color: appConfig.color,
+          debugShowCheckedModeBanner: true,
           theme: initialTheme(),
-          title: initialTitle(),
+          title: appConfig.appName,
           home: HomePage(),
           localizationsDelegates: const [
             S.delegate,
@@ -88,9 +93,5 @@ class _AppState extends BaseStateWidget<App, MainAppBloc> with WidgetsBindingObs
       primaryColor: CommonColor.primaryColor,
       fontFamily: 'Roboto',
     );
-  }
-
-  String initialTitle() {
-    return "rebuild wallpaper";
   }
 }

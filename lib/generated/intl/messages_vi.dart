@@ -48,8 +48,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "photo": MessageLookupByLibrary.simpleMessage("Hình ảnh"),
         "photo_by": MessageLookupByLibrary.simpleMessage("Được chụp bởi "),
         "random": MessageLookupByLibrary.simpleMessage("Thế giới"),
+        "result_for": MessageLookupByLibrary.simpleMessage("Kết quả cho "),
         "school": MessageLookupByLibrary.simpleMessage("Trường lớp"),
         "search": MessageLookupByLibrary.simpleMessage("Tìm kiếm..."),
+        "searching_text":
+            MessageLookupByLibrary.simpleMessage("Đang tìm kiếm "),
         "select_one": MessageLookupByLibrary.simpleMessage("Dùng làm"),
         "share_now": MessageLookupByLibrary.simpleMessage("Chia sẻ ngay"),
         "slogan_search": MessageLookupByLibrary.simpleMessage(

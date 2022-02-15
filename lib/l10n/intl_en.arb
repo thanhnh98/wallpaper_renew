@@ -23,12 +23,14 @@
   "app_slogan": "Wallpaper HD - Quickly and Easy",
   "slogan_search": "Searching is easy",
   "favourite_list": "Favorite photos",
-  "favourite_photo_des": "Let's discover and save the best moments. <3",
+  "favourite_photo_des": "Let's discover and save bunch of moments. <3",
   "empty_title": "Sorry, nothing matches with keyword, please use other one T_T",
   "try_again": "Try again",
   "give_a_cond": "Give a second...",
   "landing_title_tet": "New year",
   "motor_bike": "Motor",
   "download_now": "Download app at:",
-  "share_now": "Share this photo"
+  "share_now": "Share this photo",
+  "result_for": "Result for ",
+  "searching_text": "Searching for "
 }

@@ -15,7 +15,7 @@ class PhotoRepository extends ApiClient {
   }
 
   Future<AlbumModel> searchPhotos(String keyword, {int perpage = 80}) async{
-    final response = await super.get("https://api.pexels.com/v1/search?query=$keyword&per_page=$perpage");
+    final response = await super.get("/v1/search?query=$keyword&per_page=$perpage");
     if(response.statusCode == 200) {
       return AlbumModel.fromJson(json.decode(response.body));
     }

@@ -11,7 +11,7 @@ void main() async {
 }
 
 Future _priorToStart() async{
-  buildDependencies(flavorName: "prod");
+  buildDependencies(flavorName: "dev");
   return;
 }
 

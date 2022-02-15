@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:wallpaper/di/get_it.dart';
 
-const _BASE_URL = "https://api.pexels.com/";
+final String _BASE_URL = getAppConfigFlavor().variants["PHOTO_BASE_URL"];
 
 class ApiClient{
   final ClientOptions _client = ClientOptions(http.Client());

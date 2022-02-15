@@ -9,6 +9,7 @@ import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/style_utils.dart';
+import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/search_result_bloc.dart';
 import 'package:wallpaper/presentation/events/search_event_state.dart';
@@ -166,8 +167,8 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
               textAlign: TextAlign.left,
               text: TextSpan(
                   children: [
-                    const TextSpan(
-                        text: "Result for ",
+                    TextSpan(
+                        text: S.current.result_for,
                         style: CommonStyle.normalTextStyle
                     ),
                     TextSpan(

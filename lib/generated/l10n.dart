@@ -290,10 +290,10 @@ class S {
     );
   }
 
-  /// `Let's discover and save the best moments. <3`
+  /// `Let's discover and save bunch of moments. <3`
   String get favourite_photo_des {
     return Intl.message(
-      'Let\'s discover and save the best moments. <3',
+      'Let\'s discover and save bunch of moments. <3',
       name: 'favourite_photo_des',
       desc: '',
       args: [],
@@ -365,6 +365,26 @@ class S {
     return Intl.message(
       'Share this photo',
       name: 'share_now',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Result for `
+  String get result_for {
+    return Intl.message(
+      'Result for ',
+      name: 'result_for',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Searching for `
+  String get searching_text {
+    return Intl.message(
+      'Searching for ',
+      name: 'searching_text',
       desc: '',
       args: [],
     );
