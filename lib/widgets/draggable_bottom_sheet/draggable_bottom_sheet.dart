@@ -7,7 +7,7 @@ import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/presentation/events/main_event_state.dart';
-import 'package:wallpaper/widgets/bloc/draggable_bottom_sheet_bloc.dart';
+import 'package:wallpaper/widgets/draggable_bottom_sheet/draggable_bottom_sheet_bloc.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
@@ -15,7 +15,7 @@ import 'package:wallpaper/model/album_cover.dart';
 import 'package:wallpaper/model/list_image_model.dart';
 import 'package:wallpaper/model/photo.dart';
 
-import 'events/dragable_sheet_event_state.dart';
+import 'dragable_sheet_event_state.dart';
 
 class DraggableBottomSheet extends BaseStatefulWidget{
   const DraggableBottomSheet({Key? key}) : super(key: key);

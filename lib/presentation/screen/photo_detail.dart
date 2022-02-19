@@ -13,6 +13,7 @@ import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/photo_detail_bloc.dart';
 import 'package:wallpaper/presentation/events/photo_detail_event_state.dart';
+import 'package:wallpaper/widgets/back_button.dart';
 
 class PhotoDetailPage extends BaseStatefulWidget {
   Photo _photo;
@@ -34,49 +35,58 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder(
-        bloc: bloc,
-        builder: (context, state){
-          if (state is PhotoDetailStateDownloadImage) {
-            percent = state.downloadedPercent??0;
-          }
+        body: BlocBuilder(
+      bloc: bloc,
+      builder: (context, state) {
+        if (state is PhotoDetailStateDownloadImage) {
+          percent = state.downloadedPercent ?? 0;
+        }
 
-          return SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildImage(),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    _buildOptionsBar(),
-                    _buildBottomInfo()
-                  ],
-                ),
-              )
-          );
-        },
-      )
-    );
+        return Stack(
+          children: [
+            SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildImage(),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      _buildOptionsBar(),
+                      _buildBottomInfo()
+                    ],
+                  ),
+                )),
+            Align(
+              alignment: Alignment(-0.9, -0.9),
+              child: AppBackButton(
+                onPressed: () {
+                  GlobalNavigator.back(context);
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    ));
   }
 
   Widget _buildImage() {
     return GestureDetector(
-      onTap: () {
-        _openFullScreen();
-      },
-      child: Hero(
-        tag: _photo.id,
-        child: FadeInImage.assetNetwork(
-          placeholder: 'assets/empty.png',
-          image: _photo.src?.portrait??"",
-          fit: BoxFit.cover,
-          alignment: Alignment.center,
-        ),
-      )
-    );
+        onTap: () {
+          _openFullScreen();
+        },
+        child: Hero(
+          tag: _photo.id,
+          child: FadeInImage.assetNetwork(
+            placeholder: 'assets/empty.png',
+            image: _photo.src?.portrait ?? "",
+            fit: BoxFit.cover,
+            alignment: Alignment.center,
+          ),
+        ));
   }
 
   Widget _buildBottomInfo() {

@@ -77,9 +77,9 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
 
     if (state is SearchResultStateLoaded){
       List<Photo> data = state.albumModel?.photos??[];
-      if (state.albumModel == null || state.albumModel?.photos == null || state.albumModel?.photos?.length == 0)
+      if (state.albumModel == null || state.albumModel?.photos == null || state.albumModel?.photos?.length == 0) {
         widgets.add(_buildEmpty());
-      else {
+      } else {
         widgets.addAll([
           CupertinoSliverRefreshControl(
             builder: (context, mode, v1, v2, v3){
@@ -155,7 +155,11 @@ class _SearchResultPageState extends BaseStateCollectionWidget<SearchResultPage,
         pinned: true,
         snap: false,
         leading: IconButton(
-          icon: const Icon(Icons.search, color: Colors.white),
+          icon: const Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 24,
+          ),
           onPressed: (){
             onBack();
           },

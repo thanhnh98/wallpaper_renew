@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
+import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/view_full_photo_bloc.dart';
+import 'package:wallpaper/widgets/back_button.dart';
 
 class ViewFullPhotoPage extends BaseStatefulWidget{
   Photo? photo;
@@ -44,6 +45,16 @@ class _ViewFullPhotoState extends BaseStateWidget<ViewFullPhotoPage, ViewFullPho
                 child: _buildImageView(),
               )
           ),
+        ),
+        Align(
+          alignment: Alignment(-0.9, -0.9),
+          child:AnimatedOpacity(
+            opacity: _isShowPreview ? 0.0 : 1.0,
+            duration: const Duration(milliseconds: 500),
+            child: AppBackButton(onPressed: (){
+              GlobalNavigator.back(context);
+            })
+          ) ,
         ),
         IgnorePointer(
           child:AnimatedOpacity(

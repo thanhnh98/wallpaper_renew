@@ -1,4 +1,4 @@
-APP_PACKAGE = hd.fullhd.wallpaper.wallpaper
+APP_PACKAGE = hd.fullhd.4d.wallpaper
 MASTER_PATH = $(shell pwd)
 GRADLEW_PATH = gradlew.bat # Windows
 detected_OS = Windows
@@ -9,7 +9,7 @@ default:
 goto_master_path:
 	cd $(MASTER_PATH)
 
-run_app_prod: goto_master_path
+run_prod: goto_master_path
 	flutter run --release --flavor prod -t lib/main.dart
 
 run_dev: goto_master_path

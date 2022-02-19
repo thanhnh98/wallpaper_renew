@@ -17,6 +17,7 @@ import 'package:wallpaper/model/album_cover.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/bloc/album_detail_bloc.dart';
 import 'package:wallpaper/presentation/events/album_deatail_event_state.dart';
+import 'package:wallpaper/widgets/back_button.dart';
 
 class AlbumDetailPage extends BaseStatefulWidget {
   AlbumCoverModel albumCoverModel;
@@ -39,25 +40,22 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
 
   @override
   Widget build(BuildContext context) {
-      return SafeArea(
-
-          child: Stack(
-            children: [
-              Container(
-                color: CommonColor.black_33,
-              ),
-              BlocBuilder(
-                  bloc: bloc,
-                  builder: (context, state){
-                    return CustomScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      controller: scrollController,
-                      slivers: _buildBody(state)
-                    );
-                  }
-              )
-            ],
+      return Stack(
+        children: [
+          Container(
+            color: CommonColor.black_33,
+          ),
+          BlocBuilder(
+              bloc: bloc,
+              builder: (context, state){
+                return CustomScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    controller: scrollController,
+                    slivers: _buildBody(state)
+                );
+              }
           )
+        ],
       );
   }
 
@@ -287,8 +285,7 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
       backgroundColor: CommonColor.primaryColor,
       pinned: true,
       snap: false,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+      leading: AppBackButton(
         onPressed: (){
           GlobalNavigator.back(context);
         },

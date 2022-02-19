@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
@@ -9,7 +10,7 @@ import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/generated/l10n.dart';
 import 'package:wallpaper/model/album_cover.dart';
 import 'package:wallpaper/presentation/bloc/home_bloc.dart';
-import 'package:wallpaper/widgets/draggable_bottom_sheet.dart';
+import 'package:wallpaper/widgets/draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:wallpaper/widgets/vertical_left_bar.dart';
 
 class HomePage extends BaseStatefulWidget {
@@ -32,13 +33,16 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
         bloc: bloc,
         builder: (context, state) {
           return Scaffold(
-              body: Stack(
+              body: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle.light,
+              child: Stack(
                 children: [
                   _buildBackground(),
                   _buildBody(),
                   _buildBottomSheet()
                 ],
-              ));
+              ),
+          ));
         });
   }
 
