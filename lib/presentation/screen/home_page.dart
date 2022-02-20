@@ -1,9 +1,11 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallpaper/base/widget/base.dart';
 import 'package:wallpaper/common/color_utils.dart';
 import 'package:wallpaper/common/constant.dart';
+import 'package:wallpaper/common/firebase_analytics.dart';
 import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/sized_config.dart';
 import 'package:wallpaper/common/style_utils.dart';
@@ -124,6 +126,7 @@ class _HomeState extends BaseStateWidget<HomePage, HomeBloc> {
     return GestureDetector(
       onTap: () {
         GlobalNavigator.pushAlbumHomePage(context, item);
+        AppAnalytics.logEventOpenAlbum(item.title);
       },
       child: Container(
           width: SizeConfig.horizontalSize(50),

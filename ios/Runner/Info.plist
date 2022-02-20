@@ -3,7 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
+	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string></string>
+	<key>APP_SETTING_CUSTOM</key>
+	<string>$(APP_SETTING_CUSTOM)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

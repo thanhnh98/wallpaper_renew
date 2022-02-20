@@ -218,14 +218,29 @@ class _PhotoDetailState extends BaseStateWidget<PhotoDetailPage, PhotoDetailBloc
   }
 
   Widget _buildIconSetBackground(){
+    Color color;
+    if (percent == -1){
+      color = Colors.black;
+    }
+    else if  (percent < 100){
+      color = Colors.grey;
+    }
+    else {
+      color = Colors.black;
+    }
+
+
     return GestureDetector(
       onTap: (){
-        bloc?.requestSetBackground();
+        if(percent == -1 || percent == 100) {
+          bloc?.requestSetBackground();
+        }
       },
       child: _buildIcon(
-          const Icon(
+          Icon(
             Icons.photo,
             size: 24,
+            color: color,
           )
       ),
     );

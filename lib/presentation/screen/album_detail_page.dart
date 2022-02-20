@@ -228,15 +228,18 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
           children: [
             Align(
               child: Center(
-                  child: Hero(
-                    tag: photo.id,
-                    child:  FadeInImage.assetNetwork(
-                      placeholder: 'assets/img_loading.gif',
-                      image: photo.src?.tiny??"",
-                      fit: BoxFit.cover,
-                      height: double.infinity,
-                      width: double.infinity,
-                      alignment: Alignment.center,
+                  child: HeroMode(
+                    enabled: false,
+                    child: Hero(
+                      tag: photo.id,
+                      child:  FadeInImage.assetNetwork(
+                        placeholder: 'assets/img_loading.gif',
+                        image: photo.src?.tiny??"",
+                        fit: BoxFit.cover,
+                        height: double.infinity,
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                      ),
                     ),
                   )
               )

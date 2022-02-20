@@ -1,4 +1,5 @@
-APP_PACKAGE = hd.fullhd.4d.wallpaper
+APP_DEV = wallpaper.fullhd.dev
+APP_PROD = wallpaper.fullhd.w2k.w4k.w8k
 MASTER_PATH = $(shell pwd)
 GRADLEW_PATH = gradlew.bat # Windows
 detected_OS = Windows
@@ -11,6 +12,9 @@ goto_master_path:
 
 run_prod: goto_master_path
 	flutter run --release --flavor prod -t lib/main.dart
+
+run_prod_debug: goto_master_path
+	flutter run --debug --flavor prod -t lib/main.dart
 
 run_dev: goto_master_path
 	flutter run --debug --flavor dev -t lib/main_dev.dart
@@ -29,6 +33,16 @@ clean: goto_master_path
 code_generate: goto_master_path
 	flutter packages pub run build_runner build --delete-conflicting-outputs &&\
 	flutter packages pub run build_runner watch
+
+debug_view_start_dev:
+	adb shell setprop debug.firebase.analytics.app $(APP_DEV)
+
+debug_view_start_prod:
+	adb shell setprop debug.firebase.analytics.app $(APP_PROD)
+
+debug_view_stop: goto_master_path
+	adb shell setprop debug.firebase.analytics.app .none
+
 
 help:
 	@echo "-----------------------------------------------------"

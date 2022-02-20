@@ -5,7 +5,7 @@ import 'package:wallpaper/model/album_cover.dart';
 class Constant{
   static int _width = 400;
   static int _height = 600;
-  static int _perpage = 30;
+  static int _perpage = 80;
   static List<AlbumCoverModel> getListTopicLanding() => [
     // HorizontalLandingItemModel(
     //     S.current.landing_title_tet,
