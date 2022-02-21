@@ -43,6 +43,8 @@ debug_view_start_prod:
 debug_view_stop: goto_master_path
 	adb shell setprop debug.firebase.analytics.app .none
 
+create_avatar:
+	flutter pub run flutter_launcher_icons:main -f pubspec.yaml && flutter pub run flutter_launcher_icons:main
 
 help:
 	@echo "-----------------------------------------------------"

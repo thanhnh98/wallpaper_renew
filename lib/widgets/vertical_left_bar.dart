@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wallpaper/common/navigator.dart';
 import 'package:wallpaper/common/style_utils.dart';
 import 'package:wallpaper/generated/l10n.dart';
 
@@ -44,7 +45,7 @@ class _VerticalLeftSideState extends State<VerticalLeftSideBar>{
             child: GestureDetector(
               onTap: (){
                 //onTabSelected(videoTabIndex);
-                //NavigatorGlobal.pushVideoPage(context);
+                GlobalNavigator.pushVideoPage(context);
                 },
               child: RichText(
                 text: TextSpan(

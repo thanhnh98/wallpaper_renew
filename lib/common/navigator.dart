@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wallpaper/model/album_cover.dart';
 import 'package:wallpaper/model/photo.dart';
 import 'package:wallpaper/presentation/screen/album_detail_page.dart';
@@ -38,4 +39,7 @@ class GlobalNavigator {
     Navigator.pop(context, result);
   }
 
+  static void pushVideoPage(BuildContext context, {var result}) {
+    Fluttertoast.showToast(msg: "Tính năng bảo trì");
+  }
 }
