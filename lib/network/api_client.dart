@@ -13,7 +13,7 @@ class ApiClient{
     } else {
       url = _BASE_URL + path;
     }
-    print("GET: $url\n");
+    //print("GET: $url\n");
     return _client.get(Uri.parse(url));
   }
 
@@ -24,7 +24,7 @@ class ApiClient{
     } else {
       url = _BASE_URL + path;
     }
-    print("POST: $url\n");
+    //print("POST: $url\n");
     return _client.post(Uri.parse(url));
   }
 }

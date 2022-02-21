@@ -12,7 +12,7 @@ class TranslateRepository extends IBMClient {
     if (res.statusCode == 200) {
       return Successful(TranslateModel.fromJson(json.decode(res.body)));
     }
-    print(res.body);
+    //print(res.body);
     return Failed("Failed  to traslate");
   }
 }

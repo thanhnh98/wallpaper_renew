@@ -53,12 +53,16 @@ android {
         multiDexEnabled true
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     signingConfigs {
         release {
-//            keyAlias keystoreProperties['keyAlias']
-//            keyPassword keystoreProperties['keyPassword']
-//            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-//            storePassword keystoreProperties['storePassword']
+            keyAlias localProperties['keyAlias']
+            keyPassword localProperties['password']
+            storeFile localProperties['storeFile'] ? file(localProperties['storeFile']) : null
+            storePassword localProperties['password']
         }
     }
 
@@ -66,7 +70,8 @@ android {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            debuggable false
+            signingConfig signingConfigs.release
         }
 
         debug {
@@ -79,12 +84,12 @@ android {
     productFlavors {
         dev {
             applicationId "wallpaper.fullhd.dev"
-            resValue "string", "app_name", "Wallpaper High Quality Dev"
+            //resValue "string", "app_name", "Wallpaper High Quality Dev"
         }
 
         prod {
             applicationId "wallpaper.fullhd.w2k.w4k.w8k"
-            resValue "string", "app_name", "Wallpaper High Quality"
+            //resValue "string", "app_name", "Wallpaper High Quality"
         }
     }
 }

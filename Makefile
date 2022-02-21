@@ -23,7 +23,7 @@ build_app_prod_apk: goto_master_path
 	flutter build apk --release --flavor prod -t lib/main.dart
 
 
-build_app_prod_bundle: goto_master_path
+build_app_prod_abb: goto_master_path
 	flutter build appbundle --release --flavor prod -t lib/main.dart
 
 clean: goto_master_path
