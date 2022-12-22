@@ -34,8 +34,12 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
   @override
   AlbumDetailBloc? initBloc() => AlbumDetailBloc(albumCoverModel);
 
-  _AlbumDetailPage(this.albumCoverModel){
+  _AlbumDetailPage(this.albumCoverModel);
+
+  @override
+  void didChangeDependencies() {
     _lottieController = AnimationController(vsync: this);
+    super.didChangeDependencies();
   }
 
   @override
@@ -341,7 +345,7 @@ class _AlbumDetailPage extends BaseStateCollectionWidget<AlbumDetailPage, AlbumD
 
   @override
   void dispose() {
-    _lottieController?.dispose();
+    // _lottieController?.dispose();
     super.dispose();
   }
 }

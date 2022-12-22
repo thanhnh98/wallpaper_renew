@@ -76,18 +76,6 @@ class _AppState extends BaseStateWidget<App, MainAppBloc> with WidgetsBindingObs
     );
   }
 
-  Widget launchPage() {
-    return Container(
-      width: double.maxFinite,
-      height: double.maxFinite,
-      color: initialColor(),
-    );
-  }
-
-  Color initialColor() {
-    return const Color(0xFFFFFFFF);
-  }
-
   ThemeData initialTheme() {
     return ThemeData(
       primaryColor: CommonColor.primaryColor,
