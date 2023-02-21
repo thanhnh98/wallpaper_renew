@@ -1,16 +1,24 @@
-# wallpaper
+Hình nền 2K, 4K, HD+ cực đẹp
+====================
 
-A new Flutter project.
+***Hình nền 2K/4K cực đẹp***
 
-## Getting Started
+App có kho ảnh đa dạng, nhiều hình ảnh siêu net, tải và cài hình nền với tốc độ chóng mặt.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+<a href="https://play.google.com/store/apps/details?id=wallpaper.fullhd.w2k.w4k.w8k" target="_blank">
+<img src="https://play-lh.googleusercontent.com/lcTYDu9Mibuva5YcQMOnLxtYNgHi4FJ9lrsFYIO02kA9d1TWVjdhcjnmPc9GChDLsw=w240-h480-rw" alt="Get it on Google Play" height="90"/></a>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Tải app nhẹ nhàng tại
+=========
+
+<a href="https://play.google.com/store/apps/details?id=wallpaper.fullhd.w2k.w4k.w8k">
+  <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/>
+</a>
+
+
+Buy me a Coffee
+=========
+
+<a href="https://www.buymeacoffee.com/tlife"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=tlife&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
